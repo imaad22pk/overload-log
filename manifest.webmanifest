@@ -1,0 +1,16 @@
+{
+  "name": "Overload Log",
+  "short_name": "Overload",
+  "description": "One movement pattern a day: guided warm-up, ramp-up sets and 5 to 7 rep work sets, with progress tracking.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDEFF1",
+  "theme_color": "#171B21",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
