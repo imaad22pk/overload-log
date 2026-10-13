@@ -210,6 +210,10 @@
   .sess li:first-child { border-top: 0; }
   .sess .ok { color: var(--ink); }
   .sess .no { color: var(--ink-3); }
+  .nt { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; font: 400 13px/1.4 var(--font-body); color: var(--ink-2); }
+  .nt b { font-weight: 600; color: var(--ink); }
+  .lastnotes { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-left: 3px solid var(--line-strong); background: var(--sunken); border-radius: 0 8px 8px 0; }
+  .exnote { display: block; width: 100%; min-height: 64px; padding: 10px 12px; font: 400 16px/1.4 var(--font-body); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 8px; resize: vertical; margin-top: -4px; }
   .link { align-self: flex-start; background: none; border: 0; padding: 6px 0; min-height: 36px; font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: var(--ink); }
   .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
   .fld { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
@@ -396,6 +400,24 @@
   var adjustOpen = false;
   var swapOpen = false;
   var manualOpen = false;
+  var NOTES_LS = 'overload-log-note-drafts';
+  var NOTE_MAX = 280;
+  var noteDrafts = {};
+  try { var nd0 = JSON.parse(localStorage.getItem(NOTES_LS) || '{}'); if (nd0 && typeof nd0 === 'object') noteDrafts = nd0; } catch (err) { /* ignore */ }
+  function saveNoteDrafts() { try { localStorage.setItem(NOTES_LS, JSON.stringify(noteDrafts)); } catch (err) { /* ignore */ } }
+  var noteTimers = {};
+  function migrateNoteDrafts() {
+    var moved = false;
+    Object.keys(noteDrafts).forEach(function (id) {
+      if (S.ex[id] && typeof noteDrafts[id] === 'string' && noteDrafts[id].trim() && !S.ex[id].note) { S.ex[id].note = noteDrafts[id].slice(0, NOTE_MAX); moved = true; }
+    });
+    noteDrafts = {};
+    try { localStorage.removeItem(NOTES_LS); } catch (err) { /* ignore */ }
+    if (moved) persistLocal();
+  }
+  function noteBoxHTML(id) {
+    return '<textarea class="exnote" id="note-' + id + '" rows="2" maxlength="' + NOTE_MAX + '" aria-label="Note for ' + LIFTS[id].name + ', kept for next time" data-note="1" data-id="' + id + '" data-k="note:' + id + '">' + esc(S.ex[id].note || '') + '</textarea>';
+  }
   var dayPick = null;
   var secOpen = {};
   var histOpen = false;
@@ -429,7 +451,7 @@
 
   function fresh(id) {
     var L = LIFTS[id];
-    return { w: 0, sets: L.sets, inc: L.inc, fails: 0, last: null, history: [], base: null, tries: [] };
+    return { w: 0, sets: L.sets, inc: L.inc, fails: 0, last: null, history: [], base: null, tries: [], note: '' };
   }
   function clean(id, d) {
     var b = fresh(id);
@@ -452,7 +474,9 @@
         w: num(h.w, 0, 0, 2000),
         r: Array.isArray(h.r) ? h.r.map(function (x) { return Math.round(num(x, 0, 0, 100)); }) : [],
         ok: !!h.ok,
-        p: p
+        p: p,
+        n: cleanNotes(h.n),
+        note: cleanNote(h.note)
       };
     }) : [];
     if (d.base && typeof d.base === 'object') {
@@ -461,6 +485,10 @@
       b.base = { w: b.w, reps: null, d: b.history[0].d, manual: true };
     }
     if (!b.base) b.w = 0;
+    b.note = typeof d.note === 'string' ? d.note.slice(0, 280) : '';
+    if (!b.note) {
+      for (var hi = b.history.length - 1; hi >= 0; hi--) { if (b.history[hi].note) { b.note = b.history[hi].note.slice(0, 280); break; } }
+    }
     b.tries = Array.isArray(d.tries) ? d.tries.slice(-12).map(function (t) { t = t || {}; return { w: num(t.w, 0, 0, 2000), r: Math.round(num(t.r, 0, 0, 100)) }; }) : [];
     return b;
   }
@@ -481,6 +509,7 @@
       if (o && o.ex) Object.keys(LIFTS).forEach(function (id) { S.ex[id] = clean(id, o.ex[id]); });
     }
   } catch (err) { /* storage unavailable */ }
+  migrateNoteDrafts();
 
   /* ---------- progression: double progression inside the 5 to 7 rep range ---------- */
 
@@ -495,6 +524,21 @@
     if (mn >= REP_MAX) return 'up';
     if (mn >= REP_MIN) return 'reps';
     return e.fails + 1 >= 2 ? 'down' : 'miss';
+  }
+  function cleanNotes(n) {
+    if (!Array.isArray(n)) return null;
+    var out = n.slice(0, 10).map(function (x) { return typeof x === 'string' ? x.trim().slice(0, 200) : ''; });
+    return out.some(Boolean) ? out : null;
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+  }
+  function cleanNote(s) { return typeof s === 'string' && s.trim() ? s.trim().slice(0, 300) : null; }
+  function notesLine(n, note) {
+    var parts = [];
+    if (note) parts.push('<span>' + esc(note) + '</span>');
+    if (n) n.forEach(function (t, i) { if (t) parts.push('<span><b>Set ' + (i + 1) + ':</b> ' + esc(t) + '</span>'); });
+    return parts.length ? '<span class="nt">' + parts.join('') + '</span>' : '';
   }
   function logSession(id, reps) {
     var e = S.ex[id];
@@ -580,7 +624,7 @@
       if (isBest) { bestW = h.w; bestT = total; }
       var prW = ok && maxOk >= 0 && h.w > maxOk;
       if (ok && h.w > maxOk) maxOk = h.w;
-      return { d: h.d, t: dateMs(h.d), w: h.w, r: h.r, total: total, avg: n ? total / n : 0, ok: ok, top: top, isBest: isBest, prW: prW };
+      return { d: h.d, n: h.n, note: h.note, t: dateMs(h.d), w: h.w, r: h.r, total: total, avg: n ? total / n : 0, ok: ok, top: top, isBest: isBest, prW: prW };
     });
   }
   function plateau(id) {
@@ -632,7 +676,7 @@
       if (e.base) e.base = { w: half(e.base.w * f), reps: e.base.reps, d: e.base.d, manual: e.base.manual };
       e.tries = e.tries.map(function (t) { return { w: half(t.w * f), r: t.r }; });
       e.history = e.history.map(function (h) {
-        return { d: h.d, w: half(h.w * f), r: h.r, ok: h.ok, p: h.p ? { w: half(h.p.w * f), f: h.p.f, l: h.p.l } : null };
+        return { d: h.d, w: half(h.w * f), r: h.r, ok: h.ok, n: h.n || null, note: h.note || null, p: h.p ? { w: half(h.p.w * f), f: h.p.f, l: h.p.l } : null };
       });
     });
     S.unit = to;
@@ -666,7 +710,10 @@
         S.focus = cleanFocus(c.focus);
         S.rest = cleanRest(c.rest);
       } else if (LIFTS[id]) {
+        var ae2 = document.activeElement;
+        var keepNote = ae2 && ae2.dataset && ae2.dataset.note !== undefined && ae2.dataset.id === id ? S.ex[id].note : null;
         S.ex[id] = clean(id, c);
+        if (keepNote !== null) S.ex[id].note = keepNote;
       }
     });
     if (!snap.metadata.fromCache && !seeded) {
@@ -902,7 +949,7 @@
     var sess = e.history.slice(-5).reverse().map(function (h) {
       var t = Math.min.apply(null, h.r.concat([999]));
       var tag = t >= REP_MAX ? 'Top' : (t >= REP_MIN ? 'In range' : 'Too heavy');
-      return '<li><span>' + fmtDate(h.d) + '</span><span>' + wStr(L.kind, h.w) + ' · ' + h.r.join(' · ') + '</span><span class="' + (h.ok ? 'ok' : 'no') + '">' + tag + '</span></li>';
+      return '<li><span>' + fmtDate(h.d) + '</span><span>' + wStr(L.kind, h.w) + ' · ' + h.r.join(' · ') + '</span><span class="' + (h.ok ? 'ok' : 'no') + '">' + tag + '</span>' + notesLine(h.n, h.note) + '</li>';
     }).join('');
 
     var adjust = adjustOpen ?
@@ -1269,7 +1316,7 @@
         secHTML('wu', 1, 'Warm-up', wuSum, wuDone, isOpen('wu'), warmupHTML(pid)) +
         secHTML('ramp', 2, 'Ramp-up sets', rampSum, e.base && rs.length && rampDone, isOpen('ramp'), rampHTML(id)) +
         secHTML('work', 3, e.base ? 'Work sets' : 'Baseline test', workSum, doneToday && !!e.base, isOpen('work'),
-          '<div class="workhead" data-k="row:' + id + '"><span class="n1">' + L.name + '</span><span class="n2">' + KINDS[L.kind] + '</span></div>' + panelHTML(id)) +
+          '<div class="workhead" data-k="row:' + id + '"><span class="n1">' + L.name + '</span><span class="n2">' + KINDS[L.kind] + '</span></div>' + noteBoxHTML(id) + panelHTML(id)) +
       '</div>';
   }
   function secHTML(key, num, title, summary, done, open, body) {
@@ -1329,7 +1376,7 @@
     function st(v, l) { return '<div class="stat"><b>' + v + '</b><span>' + l + '</span></div>'; }
     var rows = s.slice(-8).reverse().map(function (x) {
       var tag = x.top ? 'Top' : (x.ok ? 'In range' : 'Too heavy');
-      return '<li><span>' + fmtDate(x.d) + '</span><span>' + wStr(L.kind, x.w) + ' · ' + x.r.join(' · ') + '</span><span class="' + (x.ok ? 'ok' : 'no') + '">' + tag + '</span></li>';
+      return '<li><span>' + fmtDate(x.d) + '</span><span>' + wStr(L.kind, x.w) + ' · ' + x.r.join(' · ') + '</span><span class="' + (x.ok ? 'ok' : 'no') + '">' + tag + '</span>' + notesLine(x.n, x.note) + '</li>';
     }).join('');
     return '<div class="pgn"><span class="v">' + big + '</span><span class="u">' + unit + '</span><span class="delta">' + deltaTxt(hd) + '</span></div>' +
       '<p class="key">' + baseLine(e, L) + '</p>' +
@@ -1624,6 +1671,15 @@
     }
   });
 
+  app.addEventListener('input', function (ev) {
+    var t = ev.target;
+    if (!t.dataset || t.dataset.note === undefined || !S.ex[t.dataset.id]) return;
+    var nid = t.dataset.id;
+    S.ex[nid].note = t.value.slice(0, NOTE_MAX);
+    persistLocal();
+    clearTimeout(noteTimers[nid]);
+    noteTimers[nid] = setTimeout(function () { save(nid); }, 800);
+  });
   app.addEventListener('keydown', function (ev) {
     var t = ev.target;
     if (!t.dataset || t.dataset.act !== 'tab') return;
