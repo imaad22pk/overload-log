@@ -29,6 +29,10 @@ Your data
   "Import backup" restores it on the same or a new phone.
 
 Updating
-  Replace index.html on the host. The phone picks up the new version in the
-  background the next time the app opens online, and uses it from the open after that.
+  Replace index.html on the host, and change APP_BUILD near the end of
+  index.html (for example '2026-11-02.1') so phones can tell it is new.
+  The phone downloads the new version in the background whenever the app is
+  opened or brought back to the front while online, then shows
+  "A new version is ready" with a Reload button. Reload, or the next fresh
+  open, switches to it.
   If you change sw.js, also change VERSION at the top of it.
