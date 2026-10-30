@@ -21,6 +21,8 @@
   [hidden] { display: none !important; }
   .backup { display: flex; flex-direction: column; gap: 6px; padding-top: 14px; border-top: 1px solid var(--line); }
   .confirm { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; border: 1.5px dashed var(--ink); border-radius: 10px; font-size: 14px; }
+  #update { position: fixed; left: 50%; transform: translateX(-50%); top: calc(10px + env(safe-area-inset-top, 0px)); width: calc(100% - 32px); max-width: 520px; z-index: 6; display: flex; align-items: center; justify-content: space-between; gap: 10px 14px; flex-wrap: wrap; background: var(--surface); color: var(--ink); border: 1.5px solid var(--ink); border-radius: 12px; padding: 10px 12px 10px 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, .18); font-size: 14px; line-height: 1.4; }
+  #update .uacts { display: flex; align-items: center; gap: 16px; }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -369,6 +371,7 @@
 <body>
 <div class="wrap" id="app"></div>
 <div id="toast" role="status" aria-live="polite" hidden></div>
+<div id="update" role="status" aria-live="polite" hidden></div>
 <div id="gain" role="dialog" aria-modal="true" aria-labelledby="gain-title" hidden></div>
 
 <script>
@@ -2024,6 +2027,23 @@
   /* ---------- offline app: backup, storage, service worker ---------- */
 
   var pendingImport = null;
+  // Build stamp of this copy of the app. The service worker reports the build it has saved; a different one means an update is downloaded.
+  var APP_BUILD = '2026-10-30.2';
+  var newBuild = '', updateLater = '';
+  function hasUnlogged() {
+    return Object.keys(drafts).some(function (k) { return drafts[k] && drafts[k].some(function (v) { return v !== null; }); });
+  }
+  function showUpdate() {
+    var u = document.getElementById('update');
+    if (!u) return;
+    if (!newBuild || newBuild === APP_BUILD || newBuild === updateLater) { u.hidden = true; u.innerHTML = ''; return; }
+    u.innerHTML = '<span><b>A new version is ready.</b>' + (hasUnlogged() ? ' Log your sets first: reloading clears sets you have tapped but not logged.' : '') + '</span>' +
+      '<span class="uacts"><button type="button" class="btn small" id="update-go">Reload</button><button type="button" class="link" id="update-later">Later</button></span>';
+    u.hidden = false;
+  }
+  function checkUpdate() {
+    try { var c = navigator.serviceWorker && navigator.serviceWorker.controller; if (c) c.postMessage({ type: 'overload-check' }); } catch (err) { /* ignore */ }
+  }
   var swReady = false;
   var LAST_BACKUP = 'overload-log-last-backup';
   function lastBackup() { try { return localStorage.getItem(LAST_BACKUP) || ''; } catch (err) { return ''; } }
@@ -2122,7 +2142,18 @@
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('./sw.js').catch(function () { /* offline support unavailable */ });
     });
-    navigator.serviceWorker.ready.then(function () { swReady = true; render(); });
+    navigator.serviceWorker.ready.then(function () { swReady = true; render(); checkUpdate(); });
+    navigator.serviceWorker.addEventListener('message', function (ev) {
+      var d = ev.data || {};
+      if (d.type === 'overload-build' && typeof d.build === 'string') { newBuild = d.build; showUpdate(); }
+    });
+    navigator.serviceWorker.addEventListener('controllerchange', checkUpdate);
+    // Home-screen apps on iPhone resume rather than restart, so check again whenever the app comes back to the front.
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') checkUpdate(); });
+    document.getElementById('update').addEventListener('click', function (ev) {
+      if (ev.target.id === 'update-go') location.reload();
+      else if (ev.target.id === 'update-later') { updateLater = newBuild; showUpdate(); }
+    });
   }
 
   if (enforceLocks()) persistLocal();
