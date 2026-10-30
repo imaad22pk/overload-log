@@ -179,6 +179,7 @@
   .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line-strong); }
   .btn.small { min-height: 38px; padding: 0 14px; font-size: 13px; }
   .btn:disabled { opacity: .38; cursor: not-allowed; }
+  .link:disabled { opacity: .4; cursor: not-allowed; text-decoration: none; }
 
   .blk { display: flex; flex-direction: column; gap: 8px; }
   .lbl { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
@@ -213,9 +214,15 @@
   .nt { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 2px; font: 400 13px/1.4 var(--font-body); color: var(--ink-2); }
   .nt b { font-weight: 600; color: var(--ink); }
   .lastnotes { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-left: 3px solid var(--line-strong); background: var(--sunken); border-radius: 0 8px 8px 0; }
-  .exnote { display: block; width: 100%; min-height: 64px; padding: 10px 12px; font: 400 16px/1.4 var(--font-body); background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 8px; resize: vertical; margin-top: -4px; }
+  .musc { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; background: var(--sunken); border-radius: 10px; }
+  .musc .mrow { display: flex; flex-direction: column; gap: 6px; }
+  .mchips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .mchips li { font-size: 13px; font-weight: 600; padding: 3px 11px; border-radius: 999px; border: 1.5px solid var(--ink); }
+  .mchips.pri li { background: var(--action); color: var(--on-action); }
+  .mchips.sec li { background: transparent; color: var(--ink-2); border-color: var(--line-strong); font-weight: 500; }
   .link { align-self: flex-start; background: none; border: 0; padding: 6px 0; min-height: 36px; font-weight: 600; font-size: 14px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: var(--ink); }
   .form { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+  .form.stack { grid-template-columns: minmax(0, 1fr); max-width: 360px; }
   .fld { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   .fld label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
   .fld input { width: 100%; min-height: 42px; padding: 8px 10px; font: 500 15px var(--font-mono); background: var(--bg); border: 1.5px solid var(--line-strong); border-radius: 8px; }
@@ -226,7 +233,18 @@
   .opt .o1 { font-weight: 600; }
   .opt .o2 { font-size: 12px; color: var(--ink-3); }
 
-  .pgctl { display: flex; justify-content: flex-end; margin-bottom: -18px; }
+  .pgctl { display: flex; justify-content: flex-end; gap: 6px 22px; flex-wrap: wrap; margin-bottom: -18px; }
+  .reorder { display: flex; flex-direction: column; gap: 12px; }
+  .reorder .rhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .rolist { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--line); }
+  .rolist li { display: grid; grid-template-columns: 30px 22px minmax(0, 1fr) 44px 44px; gap: 10px; align-items: center; padding: 8px 4px; min-height: 64px; border-top: 1px solid var(--line); }
+  .rolist .rn { font: 800 20px/1 var(--font-display); text-align: center; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .rolist .rt { min-width: 0; display: flex; flex-direction: column; }
+  .rolist .rt b { font: 700 18px/1.05 var(--font-display); letter-spacing: .06em; text-transform: uppercase; }
+  .rolist .rt span { font-size: 13px; color: var(--ink-3); }
+  .mvb { width: 44px; height: 44px; display: grid; place-items: center; background: transparent; border: 1.5px solid var(--line-strong); border-radius: 10px; cursor: pointer; padding: 0; }
+  .mvb:disabled { opacity: .3; cursor: not-allowed; }
+  .mvb svg { width: 18px; height: 18px; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .pgrid { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); }
   .pg { min-width: 0; border-top: 1px solid var(--line); }
   .pgh { margin: 0; font: inherit; }
@@ -281,7 +299,12 @@
   .sn.done { background: var(--ink); color: var(--on-action); font-size: 13px; }
   .secbody { display: flex; flex-direction: column; gap: 12px; padding-bottom: 18px; min-width: 0; }
   .secbody .panel { padding: 0; }
-  .workhead { display: flex; align-items: baseline; gap: 4px 10px; flex-wrap: wrap; }
+  .workhead { display: flex; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+  .workhead .whn { display: flex; align-items: baseline; gap: 4px 10px; flex-wrap: wrap; min-width: 0; }
+  .workhead .link { flex: none; padding: 0; min-height: 0; text-align: right; }
+  .swaphead { display: flex; flex-direction: column; gap: 8px; }
+  .opt.locked { border-style: dashed; cursor: not-allowed; opacity: .6; }
+  .opt.locked .o1::after { content: ' · Locked'; font-weight: 500; color: var(--ink-3); }
   .workhead .n1 { font-weight: 600; font-size: 16px; }
   .workhead .n2 { font-size: 13px; color: var(--ink-3); }
   .linkrow { display: flex; flex-wrap: wrap; gap: 4px 20px; }
@@ -330,12 +353,23 @@
   .foot { font-size: 12px; color: var(--ink-3); margin: 0; }
   #toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); max-width: calc(100% - 32px); background: var(--action); color: var(--on-action); font-weight: 600; font-size: 14px; padding: 10px 16px; border-radius: 8px; z-index: 5; }
 
+  #gain { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px; background: rgba(12, 14, 18, .55); }
+  #gain .gcard { width: 100%; max-width: 380px; background: var(--surface); color: var(--ink); border: 1.5px solid var(--line-strong); border-radius: 16px; padding: 22px 20px 20px; display: flex; flex-direction: column; gap: 12px; text-align: center; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+  #gain .gk { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); }
+  #gain .gl { margin: 0; font: 700 22px/1.1 var(--font-display); letter-spacing: .06em; text-transform: uppercase; }
+  #gain .gp { margin: 4px 0 0; font: 800 clamp(84px, 30vw, 120px)/.9 var(--font-display); letter-spacing: .01em; font-variant-numeric: tabular-nums; color: var(--plate-green); }
+  #gain .gp.neg { color: var(--plate-red); }
+  #gain .gp.flat { color: var(--ink); }
+  #gain .gs { margin: 0; font-size: 15px; color: var(--ink-2); }
+  #gain .gc { margin: 0; font: 400 13px/1.5 var(--font-mono); color: var(--ink-2); background: var(--sunken); border-radius: 8px; padding: 8px 10px; }
+  #gain .btn { align-self: stretch; margin-top: 4px; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
 <div id="toast" role="status" aria-live="polite" hidden></div>
+<div id="gain" role="dialog" aria-modal="true" aria-labelledby="gain-title" hidden></div>
 
 <script>
 (function () {
@@ -345,12 +379,12 @@
   var RANGE = REP_MIN + '–' + REP_MAX;
 
   var PATTERNS = [
-    { id: 'squat', name: 'Squat', note: 'Quads and glutes, knee-led', color: '--plate-red', lifts: ['back-squat', 'front-squat', 'split-squat', 'leg-press'] },
-    { id: 'hinge', name: 'Hinge', note: 'Hamstrings and glutes, hip-led', color: '--plate-blue', lifts: ['deadlift', 'rdl', 'hip-thrust', 'trap-deadlift'] },
+    { id: 'squat', name: 'Squat', note: 'Quads and glutes, knee-led', color: '--plate-red', lifts: ['back-squat', 'front-squat', 'split-squat', 'goblet-squat'] },
+    { id: 'hinge', name: 'Hinge', note: 'Hamstrings and glutes, hip-led', color: '--plate-blue', lifts: ['rdl', 'hip-thrust', 'suitcase-deadlift'] },
     { id: 'hpush', name: 'Horizontal Push', note: 'Chest, shoulders, triceps', color: '--plate-yellow', lifts: ['bench', 'db-bench', 'incline-db', 'cg-bench'] },
-    { id: 'vpush', name: 'Vertical Push', note: 'Shoulders and triceps overhead', color: '--plate-green', lifts: ['ohp', 'seated-db-press', 'push-press', 'landmine-press'] },
-    { id: 'hpull', name: 'Horizontal Pull', note: 'Upper back and rear delts', color: '--plate-white', lifts: ['bb-row', 'cs-row', 'cable-row', 'one-arm-row'] },
-    { id: 'vpull', name: 'Vertical Pull', note: 'Lats and biceps', color: '--plate-black', lifts: ['pullup', 'chinup', 'lat-pulldown', 'nj-pulldown'] }
+    { id: 'vpush', name: 'Vertical Push', note: 'Shoulders and triceps overhead', color: '--plate-green', lifts: ['ohp', 'seated-db-press', 'push-press', 'arnold-press'] },
+    { id: 'hpull', name: 'Horizontal Pull', note: 'Upper back and rear delts', color: '--plate-white', lifts: ['bb-row', 'cs-row', 'ring-row', 'one-arm-row'] },
+    { id: 'vpull', name: 'Vertical Pull', note: 'Lats and biceps', color: '--plate-black', lifts: ['pullup', 'chinup'] }
   ];
 
   // sets = work sets per session, inc = jump once every set reaches the top of the range. Weights come from the baseline test, never from here.
@@ -358,11 +392,10 @@
     'back-squat': { name: 'Back Squat', kind: 'bb', sets: 3, inc: 5 },
     'front-squat': { name: 'Front Squat', kind: 'bb', sets: 3, inc: 5 },
     'split-squat': { name: 'Bulgarian Split Squat', kind: 'db', sets: 3, inc: 5 },
-    'leg-press': { name: 'Leg Press', kind: 'mc', sets: 3, inc: 10 },
-    'deadlift': { name: 'Deadlift', kind: 'bb', sets: 2, inc: 10 },
+    'goblet-squat': { name: 'Goblet Squat', kind: 'kb', sets: 3, inc: 5 },
     'rdl': { name: 'Romanian Deadlift', kind: 'bb', sets: 3, inc: 5 },
     'hip-thrust': { name: 'Hip Thrust', kind: 'bb', sets: 3, inc: 10 },
-    'trap-deadlift': { name: 'Trap Bar Deadlift', kind: 'tb', sets: 2, inc: 10 },
+    'suitcase-deadlift': { name: 'Suitcase Deadlift', kind: 'kb', sets: 3, inc: 5 },
     'bench': { name: 'Barbell Bench Press', kind: 'bb', sets: 3, inc: 5 },
     'db-bench': { name: 'Dumbbell Bench Press', kind: 'db', sets: 3, inc: 5 },
     'incline-db': { name: 'Incline Dumbbell Press', kind: 'db', sets: 3, inc: 5 },
@@ -370,17 +403,15 @@
     'ohp': { name: 'Overhead Press', kind: 'bb', sets: 3, inc: 5 },
     'seated-db-press': { name: 'Seated Dumbbell Press', kind: 'db', sets: 3, inc: 5 },
     'push-press': { name: 'Push Press', kind: 'bb', sets: 3, inc: 5 },
-    'landmine-press': { name: 'Landmine Press', kind: 'lm', sets: 3, inc: 5 },
+    'arnold-press': { name: 'Arnold Press', kind: 'db', sets: 3, inc: 5 },
     'bb-row': { name: 'Barbell Row', kind: 'bb', sets: 3, inc: 5 },
     'cs-row': { name: 'Chest-Supported Row', kind: 'db', sets: 3, inc: 5 },
-    'cable-row': { name: 'Seated Cable Row', kind: 'mc', sets: 3, inc: 5 },
+    'ring-row': { name: 'Ring Row', kind: 'bw', sets: 3, inc: 5 },
     'one-arm-row': { name: 'One-Arm Dumbbell Row', kind: 'db', sets: 3, inc: 5 },
     'pullup': { name: 'Pull-Up', kind: 'bw', sets: 3, inc: 5 },
-    'chinup': { name: 'Chin-Up', kind: 'bw', sets: 3, inc: 5 },
-    'lat-pulldown': { name: 'Lat Pulldown', kind: 'mc', sets: 3, inc: 5 },
-    'nj-pulldown': { name: 'Neutral-Grip Pulldown', kind: 'mc', sets: 3, inc: 5 }
+    'chinup': { name: 'Chin-Up', kind: 'bw', sets: 3, inc: 5 }
   };
-  var KINDS = { bb: 'Barbell', tb: 'Trap bar', db: 'Dumbbells, per hand', mc: 'Machine or cable', bw: 'Bodyweight plus load', lm: 'Landmine' };
+  var KINDS = { bb: 'Barbell', tb: 'Trap bar', db: 'Dumbbells, per hand', mc: 'Machine or cable', bw: 'Bodyweight plus load', lm: 'Landmine', kb: 'One dumbbell or kettlebell' };
   var PLATE_KINDS = ['bb', 'tb'];
   var PLATES = { lb: [45, 35, 25, 10, 5, 2.5], kg: [25, 20, 15, 10, 5, 2.5, 1.25] };
   var BAR = { lb: 45, kg: 20 };
@@ -389,9 +420,22 @@
   var PAT_OF = {};
   var DEFAULT_FOCUS = {};
   PATTERNS.forEach(function (p) { DEFAULT_FOCUS[p.id] = p.lifts[0]; p.lifts.forEach(function (id) { PAT_OF[id] = p.id; }); });
+  var DEFAULT_ORDER = PATTERNS.map(function (p) { return p.id; });
 
   var app = document.getElementById('app');
-  var S = { unit: 'lb', focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)), rest: 180, ex: {} };
+  var S = { unit: 'lb', focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)), rest: 180, bar: { lb: BAR.lb, kg: BAR.kg }, order: DEFAULT_ORDER.slice(), ex: {}, retired: {} };
+  // Bar weight is set once by the user and remembered (per unit) for every barbell lift.
+  function cleanBar(b) {
+    var out = { lb: BAR.lb, kg: BAR.kg };
+    if (b && typeof b === 'object') ['lb', 'kg'].forEach(function (u) { var v = b[u]; if (typeof v === 'number' && isFinite(v) && v >= 1 && v <= 200) out[u] = v; });
+    return out;
+  }
+  function barW() { return S.bar[S.unit]; }
+  function setBar(v) {
+    S.bar[S.unit] = v;
+    var other = S.unit === 'lb' ? 'kg' : 'lb';
+    S.bar[other] = Math.round((S.unit === 'lb' ? v * LB : v / LB) * 2) / 2;
+  }
   function cleanRest(v) { return (typeof v === 'number' && isFinite(v)) ? Math.min(600, Math.max(30, Math.round(v / 15) * 15)) : 180; }
   var drafts = {};
   var tab = 'train';
@@ -415,8 +459,37 @@
     try { localStorage.removeItem(NOTES_LS); } catch (err) { /* ignore */ }
     if (moved) persistLocal();
   }
-  function noteBoxHTML(id) {
-    return '<textarea class="exnote" id="note-' + id + '" rows="2" maxlength="' + NOTE_MAX + '" aria-label="Note for ' + LIFTS[id].name + ', kept for next time" data-note="1" data-id="' + id + '" data-k="note:' + id + '">' + esc(S.ex[id].note || '') + '</textarea>';
+  // Muscles each lift works: [primary, secondary].
+  var MUSCLES = {
+    'back-squat': [['Quads', 'Glutes'], ['Adductors', 'Hamstrings', 'Spinal erectors', 'Core']],
+    'front-squat': [['Quads'], ['Glutes', 'Adductors', 'Upper back', 'Core']],
+    'split-squat': [['Quads', 'Glutes'], ['Adductors', 'Hamstrings', 'Core']],
+    'goblet-squat': [['Quads', 'Glutes'], ['Adductors', 'Core', 'Upper back']],
+    'rdl': [['Hamstrings', 'Glutes'], ['Spinal erectors', 'Lats', 'Forearms']],
+    'hip-thrust': [['Glutes'], ['Hamstrings', 'Quads', 'Adductors', 'Core']],
+    'suitcase-deadlift': [['Glutes', 'Hamstrings'], ['Obliques', 'Spinal erectors', 'Traps', 'Forearms']],
+    'bench': [['Chest'], ['Front delts', 'Triceps']],
+    'db-bench': [['Chest'], ['Front delts', 'Triceps']],
+    'incline-db': [['Upper chest', 'Front delts'], ['Triceps', 'Chest']],
+    'cg-bench': [['Triceps', 'Chest'], ['Front delts']],
+    'ohp': [['Front delts', 'Triceps'], ['Side delts', 'Upper chest', 'Upper traps', 'Core']],
+    'seated-db-press': [['Front delts', 'Side delts', 'Triceps'], ['Upper chest', 'Upper traps']],
+    'push-press': [['Front delts', 'Triceps'], ['Quads', 'Glutes', 'Upper traps', 'Core']],
+    'arnold-press': [['Front delts', 'Side delts'], ['Triceps', 'Rear delts', 'Upper traps']],
+    'bb-row': [['Lats', 'Mid back'], ['Rear delts', 'Biceps', 'Spinal erectors', 'Forearms']],
+    'cs-row': [['Mid back', 'Lats'], ['Rear delts', 'Biceps', 'Forearms']],
+    'ring-row': [['Lats', 'Mid back'], ['Rear delts', 'Biceps', 'Core', 'Forearms']],
+    'one-arm-row': [['Lats', 'Mid back'], ['Rear delts', 'Biceps', 'Obliques', 'Forearms']],
+    'pullup': [['Lats'], ['Biceps', 'Mid back', 'Rear delts', 'Forearms', 'Core']],
+    'chinup': [['Lats', 'Biceps'], ['Mid back', 'Rear delts', 'Forearms', 'Core']]
+  };
+  function musclesHTML(id) {
+    var m = MUSCLES[id];
+    if (!m) return '';
+    function row(label, cls, list) {
+      return '<div class="mrow"><h3 class="lbl">' + label + '</h3><ul class="mchips ' + cls + '">' + list.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul></div>';
+    }
+    return '<div class="musc" aria-label="Muscles worked by ' + esc(LIFTS[id].name) + '">' + row('Primary muscles', 'pri', m[0]) + row('Secondary muscles', 'sec', m[1]) + '</div>';
   }
   var dayPick = null;
   var secOpen = {};
@@ -451,7 +524,7 @@
 
   function fresh(id) {
     var L = LIFTS[id];
-    return { w: 0, sets: L.sets, inc: L.inc, fails: 0, last: null, history: [], base: null, tries: [], note: '' };
+    return { w: 0, sets: L.sets, inc: L.inc, fails: 0, last: null, history: [], base: null, tries: [], note: '', lock: null, lastLock: 0, pfrom: 0, retest: null };
   }
   function clean(id, d) {
     var b = fresh(id);
@@ -481,7 +554,7 @@
     }) : [];
     if (d.base && typeof d.base === 'object') {
       b.base = { w: num(d.base.w, 0, 0, 2000), reps: typeof d.base.reps === 'number' ? Math.round(num(d.base.reps, 0, 0, 100)) : null, d: String(d.base.d || ''), manual: !!d.base.manual };
-    } else if (b.history.length) {
+    } else if (d.base === undefined && b.history.length) {
       b.base = { w: b.w, reps: null, d: b.history[0].d, manual: true };
     }
     if (!b.base) b.w = 0;
@@ -489,8 +562,50 @@
     if (!b.note) {
       for (var hi = b.history.length - 1; hi >= 0; hi--) { if (b.history[hi].note) { b.note = b.history[hi].note.slice(0, 280); break; } }
     }
+    b.lastLock = num(d.lastLock, 0, 0, 1e15);
+    b.pfrom = Math.min(b.history.length, Math.round(num(d.pfrom, 0, 0, 1000)));
+    b.lock = cleanLock(d.lock, true);
+    b.retest = cleanRetest(d.retest);
     b.tries = Array.isArray(d.tries) ? d.tries.slice(-12).map(function (t) { t = t || {}; return { w: num(t.w, 0, 0, 2000), r: Math.round(num(t.r, 0, 0, 100)) }; }) : [];
     return b;
+  }
+  // A plateaued lift is locked until every other lift in its group has plateaued since.
+  function cleanLock(l, deep) {
+    if (!l || typeof l !== 'object' || typeof l.t !== 'number' || !isFinite(l.t)) return null;
+    var out = { t: l.t, h: typeof l.h === 'number' && isFinite(l.h) ? Math.max(0, Math.round(l.h)) : 0, prev: typeof l.prev === 'number' && isFinite(l.prev) ? l.prev : 0, freed: [] };
+    if (deep && Array.isArray(l.freed)) l.freed.forEach(function (x) {
+      if (x && typeof x.id === 'string' && LIFTS[x.id]) out.freed.push({ id: x.id, lock: cleanLock(x.lock, false), pfrom: typeof x.pfrom === 'number' && isFinite(x.pfrom) ? Math.max(0, Math.round(x.pfrom)) : 0, snap: x.snap && typeof x.snap === 'object' ? x.snap : null });
+    });
+    return out;
+  }
+  // Set when a lift comes back from the rotation: its best before the lock, to compare the retest against.
+  function cleanRetest(r) {
+    if (!r || typeof r !== 'object' || typeof r.w !== 'number' || !isFinite(r.w) || typeof r.r !== 'number') return null;
+    return { w: Math.max(0, r.w), r: Math.max(0, Math.round(r.r)), d: String(r.d || '') };
+  }
+  function e1rm(w, r) { return w * (1 + r / 30); }
+  function bestBeforeLock(id) {
+    var best = null;
+    S.ex[id].history.forEach(function (h) {
+      if (!h.r.length) return;
+      var mn = Math.min.apply(null, h.r);
+      if (mn < REP_MIN) return;
+      var sc = e1rm(h.w, mn);
+      if (!best || sc > best.sc || (sc === best.sc && mn > best.r)) best = { w: h.w, r: mn, d: h.d, sc: sc };
+    });
+    return best ? { w: best.w, r: best.r, d: best.d } : null;
+  }
+  // The order of the movement patterns. It drives the Progress list and the Train tab's day buttons and rotation.
+  function cleanOrder(o) {
+    var out = [];
+    if (Array.isArray(o)) o.forEach(function (id) { if (DEFAULT_ORDER.indexOf(id) >= 0 && out.indexOf(id) < 0) out.push(id); });
+    DEFAULT_ORDER.forEach(function (id) { if (out.indexOf(id) < 0) out.push(id); });
+    return out;
+  }
+  function applyOrder() {
+    var rank = {};
+    S.order.forEach(function (id, i) { rank[id] = i; });
+    PATTERNS.sort(function (a, b) { return rank[a.id] - rank[b.id]; });
   }
   function cleanFocus(f) {
     var out = JSON.parse(JSON.stringify(DEFAULT_FOCUS));
@@ -506,10 +621,16 @@
       if (o && (o.unit === 'lb' || o.unit === 'kg')) S.unit = o.unit;
       if (o && o.focus) S.focus = cleanFocus(o.focus);
       if (o) S.rest = cleanRest(o.rest);
+      if (o) S.bar = cleanBar(o.bar);
+      if (o) S.order = cleanOrder(o.order);
       if (o && o.ex) Object.keys(LIFTS).forEach(function (id) { S.ex[id] = clean(id, o.ex[id]); });
+      // Lifts removed from the list keep their saved data here, untouched, so nothing logged is lost.
+      if (o && o.retired && typeof o.retired === 'object') Object.keys(o.retired).forEach(function (id) { if (!LIFTS[id]) S.retired[id] = o.retired[id]; });
+      if (o && o.ex) Object.keys(o.ex).forEach(function (id) { if (!LIFTS[id] && o.ex[id]) S.retired[id] = o.ex[id]; });
     }
   } catch (err) { /* storage unavailable */ }
   migrateNoteDrafts();
+  applyOrder();
 
   /* ---------- progression: double progression inside the 5 to 7 rep range ---------- */
 
@@ -544,7 +665,7 @@
     var e = S.ex[id];
     var res = outcome(e, reps);
     e.history.push({ d: today(), w: e.w, r: reps.slice(), ok: Math.min.apply(null, reps) >= REP_MIN, p: { w: e.w, f: e.fails, l: e.last } });
-    if (e.history.length > 80) e.history.shift();
+    if (e.history.length > 80) { e.history.shift(); if (e.pfrom > 0) e.pfrom -= 1; if (e.lock && e.lock.h > 0) e.lock.h -= 1; }
     if (res === 'up') { e.w = Math.round((e.w + e.inc) * 100) / 100; e.fails = 0; }
     else if (res === 'reps') { e.fails = 0; }
     else if (res === 'down') { e.w = deloadWeight(e.w); e.fails = 0; }
@@ -554,8 +675,21 @@
   }
   function undoLast(id) {
     var e = S.ex[id];
+    if (e.lock && e.lock.h === e.history.length) {
+      // Undoing the session that caused the lock puts the group back the way it was.
+      e.lock.freed.forEach(function (f) {
+        var ef = S.ex[f.id];
+        if (!ef) return;
+        ef.lock = f.lock; ef.pfrom = f.pfrom;
+        if (f.snap) { var c2 = clean(f.id, Object.assign({}, ef, f.snap, { lock: null })); ['w', 'base', 'tries', 'fails', 'last', 'retest'].forEach(function (k) { ef[k] = c2[k]; }); if (!f.snap.base) ef.base = null; }
+        save(f.id);
+      });
+      e.lastLock = e.lock.prev;
+      e.lock = null;
+    }
     var h = e.history.pop();
     if (!h) return;
+    if (e.pfrom > e.history.length) e.pfrom = e.history.length;
     if (h.p) { e.w = h.p.w; e.fails = h.p.f; e.last = h.p.l; } else { e.w = h.w; }
   }
   function getDraft(id) {
@@ -628,9 +762,49 @@
     });
   }
   function plateau(id) {
-    var s = seriesOf(id);
+    var s = seriesOf(id).slice(S.ex[id].pfrom || 0);
     if (s.length < 5) return false;
     return !s.slice(-4).some(function (x) { return x.isBest; });
+  }
+  function groupLifts(id) { return patById(PAT_OF[id]).lifts; }
+  function isLocked(id) { return !!(S.ex[id] && S.ex[id].lock); }
+  function waitingOn(id) {
+    var e = S.ex[id];
+    if (!e.lock) return [];
+    return groupLifts(id).filter(function (x) { return x !== id && (S.ex[x].lastLock || 0) <= e.lock.t; });
+  }
+  function namesList(ids) {
+    var n = ids.map(function (x) { return LIFTS[x].name; });
+    return n.length < 2 ? n.join('') : n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1];
+  }
+  function lockLift(id) {
+    var e = S.ex[id], lifts = groupLifts(id);
+    var t = Math.max(Date.now(), 1 + Math.max.apply(null, lifts.map(function (x) { return S.ex[x].lastLock || 0; })));
+    var lk = { t: t, h: e.history.length, prev: e.lastLock || 0, freed: [] };
+    e.lock = lk;
+    e.lastLock = t;
+    lifts.forEach(function (o) {
+      var eo = S.ex[o];
+      if (o === id || !eo.lock) return;
+      if (waitingOn(o).length) return;
+      lk.freed.push({ id: o, lock: eo.lock, pfrom: eo.pfrom || 0, snap: JSON.parse(JSON.stringify({ w: eo.w, base: eo.base, tries: eo.tries, fails: eo.fails, last: eo.last, retest: eo.retest })) });
+      eo.lock = null;
+      eo.pfrom = eo.history.length;
+      // Back from the rotation: retest it, and compare against its best before the lock.
+      eo.retest = bestBeforeLock(o) || (eo.base ? { w: eo.base.w, r: eo.base.reps || REP_MIN, d: eo.base.d } : null);
+      eo.base = null; eo.tries = []; eo.w = 0; eo.fails = 0; eo.last = null;
+      save(o);
+    });
+    return lk;
+  }
+  function maybeLock(id) {
+    if (isLocked(id) || groupLifts(id).length < 2 || !plateau(id)) return null;
+    return lockLift(id);
+  }
+  function enforceLocks() {
+    var any = false;
+    PATTERNS.forEach(function (p) { p.lifts.forEach(function (id) { if (maybeLock(id)) { save(id); any = true; } }); });
+    return any;
   }
   function bestQualified(id) {
     var q = seriesOf(id).filter(function (x) { return x.ok; });
@@ -675,6 +849,7 @@
       e.inc = Math.max(si, rnd(e.inc * f, si));
       if (e.base) e.base = { w: half(e.base.w * f), reps: e.base.reps, d: e.base.d, manual: e.base.manual };
       e.tries = e.tries.map(function (t) { return { w: half(t.w * f), r: t.r }; });
+      if (e.retest) e.retest = { w: half(e.retest.w * f), r: e.retest.r, d: e.retest.d };
       e.history = e.history.map(function (h) {
         return { d: h.d, w: half(h.w * f), r: h.r, ok: h.ok, n: h.n || null, note: h.note || null, p: h.p ? { w: half(h.p.w * f), f: h.p.f, l: h.p.l } : null };
       });
@@ -690,7 +865,7 @@
   function save(id) {
     persistLocal();
     if (!col) return;
-    var body = JSON.parse(JSON.stringify(id === 'settings' ? { unit: S.unit, focus: S.focus, rest: S.rest } : S.ex[id]));
+    var body = JSON.parse(JSON.stringify(id === 'settings' ? { unit: S.unit, focus: S.focus, rest: S.rest, bar: S.bar, order: S.order } : S.ex[id]));
     var doc = col.doc(id);
     queue[id] = (queue[id] || Promise.resolve()).then(function () { return doc.set(body); }).catch(function () {
       toast('Could not save to your account. This log is kept on this device.');
@@ -709,6 +884,9 @@
         if (c.unit === 'lb' || c.unit === 'kg') S.unit = c.unit;
         S.focus = cleanFocus(c.focus);
         S.rest = cleanRest(c.rest);
+        S.bar = cleanBar(c.bar);
+        S.order = cleanOrder(c.order);
+        applyOrder();
       } else if (LIFTS[id]) {
         var ae2 = document.activeElement;
         var keepNote = ae2 && ae2.dataset && ae2.dataset.note !== undefined && ae2.dataset.id === id ? S.ex[id].note : null;
@@ -721,6 +899,7 @@
       Object.keys(LIFTS).forEach(function (id) { if (!have[id] && S.ex[id].history.length) save(id); });
       if (!have.settings) save('settings');
     }
+    enforceLocks();
     if (JSON.stringify(S) !== before || !synced) { synced = true; persistLocal(); render(); }
   }
   function initDb() {
@@ -751,6 +930,7 @@
   function chip(id) {
     var e = S.ex[id];
     if (!e.base) return ['Find baseline', 'new'];
+    if (isLocked(id)) return ['Locked', 'plat'];
     if (plateau(id)) return ['Plateau', 'plat'];
     if (!e.history.length) return ['Ready', 'new'];
     var h = e.history[e.history.length - 1];
@@ -762,11 +942,12 @@
   }
   function plateLine(w) {
     var u = S.unit;
-    var side = (w - BAR[u]) / 2;
-    if (side < -1e-9) return 'Target is under the ' + BAR[u] + ' ' + u + ' bar.';
+    var bw = barW();
+    var side = (w - bw) / 2;
+    if (side < -1e-9) return 'Target is under the ' + fmt(bw) + ' ' + u + ' bar.';
     var out = [];
     PLATES[u].forEach(function (p) { while (side >= p - 1e-9) { out.push(p); side -= p; } });
-    var s = 'Bar ' + BAR[u] + ' ' + u + ' · each side ' + (out.length ? out.map(fmt).join(' + ') : 'no plates');
+    var s = 'Bar ' + fmt(bw) + ' ' + u + ' · each side ' + (out.length ? out.map(fmt).join(' + ') : 'no plates');
     if (side > 0.01) s += ' (about ' + fmt(side * 2) + ' ' + u + ' short)';
     return s;
   }
@@ -859,6 +1040,23 @@
 
   /* ---------- Train tab ---------- */
 
+  var headSwap = false;
+  function swapLinkHTML(id) {
+    return '<button type="button" class="link" data-act="swap" data-id="' + id + '" data-k="swap:' + id + '" aria-expanded="' + swapOpen + '">' + (swapOpen ? 'Hide variations' : 'Swap to a variation') + '</button>';
+  }
+  function swapListHTML(id, force) {
+    if (!swapOpen && !force) return '';
+    var pat = PATTERNS.filter(function (p) { return p.id === PAT_OF[id]; })[0];
+    return '<div class="swaphead"><ul class="swap" aria-label="Variations for ' + pat.name + '">' + pat.lifts.map(function (lid) {
+      var bq = bestQualified(lid);
+      var info = bq ? 'Best ' + wStr(LIFTS[lid].kind, bq.w) + ' for ' + REP_MIN + '+ reps' : (S.ex[lid].base ? 'Baseline set' : 'Baseline not measured');
+      if (isLocked(lid)) {
+        var wo = waitingOn(lid);
+        return '<li><button type="button" class="opt locked" aria-disabled="true" disabled data-k="focus:' + lid + '"><span class="o1">' + LIFTS[lid].name + '</span><span class="o2">Plateaued ' + fmtT(S.ex[lid].lock.t) + '. Back after ' + namesList(wo) + (wo.length > 1 ? ' each plateau' : ' plateaus') + '.</span></button></li>';
+      }
+      return '<li><button type="button" class="opt" aria-pressed="' + (lid === id) + '" data-act="focus" data-id="' + lid + '" data-k="focus:' + lid + '"><span class="o1">' + LIFTS[lid].name + '</span><span class="o2">' + KINDS[LIFTS[lid].kind] + ' · ' + info + '</span></button></li>';
+    }).join('') + '</ul><p class="key">Swapping keeps every logged session. A lift that plateaus is locked until every other variation in the group has plateaued too.</p></div>';
+  }
   function swapBlockHTML(id) {
     var pat = PATTERNS.filter(function (p) { return p.id === PAT_OF[id]; })[0];
     var list = swapOpen ?
@@ -890,12 +1088,13 @@
       return '<li><span>Try ' + (i + 1) + '</span><span>' + wStr(L.kind, t.w) + ' × ' + t.r + '</span><span class="no">' + tag + '</span></li>';
     }).join('');
     var wl = (isBw ? 'Added weight' : 'Weight') + ' (' + u + ')';
-    var prefill = sug !== null ? fmt(sug) : '';
-    var manual = manualOpen ?
+    var prefill = sug !== null ? fmt(sug) : (e.retest && !e.tries.length ? fmt(e.retest.w) : '');
+    var manual = manualOpen && !e.retest ?
       '<div class="testrow"><div class="fld"><label for="mw-' + id + '">' + wl + '</label><input id="mw-' + id + '" type="number" inputmode="decimal" step="any" min="0" data-k="mw:' + id + '"></div></div>' +
       '<div class="acts"><button type="button" class="btn ghost small" data-act="usemanual" data-id="' + id + '" data-k="usem:' + id + '">Use this weight</button></div>' : '';
     return '<div class="panel" id="pn-' + id + '">' +
-      '<div class="blk"><h3 class="lbl">Baseline test</h3>' +
+      (e.retest ? '<div class="plat-note"><span><b>Back from the rotation.</b> Every other ' + patById(PAT_OF[id]).name + ' variation has plateaued since ' + L.name + ' was locked. Retest it to see how much stronger you are. Your best before the lock: ' + wStr(L.kind, e.retest.w) + ' × ' + e.retest.r + (e.retest.d ? ' on ' + fmtDate(e.retest.d) : '') + '.</span></div>' : '') +
+      '<div class="blk"><h3 class="lbl">' + (e.retest ? 'Retest' : 'Baseline test') + '</h3>' +
       '<p class="tip">Warm up with lighter sets first. Then choose a weight you think you can lift for about 6 controlled reps, do one set, and stop 1 to 2 reps before your form would slip. This tests control, not a max.</p></div>' +
       (tries ? '<ul class="sess">' + tries + '</ul>' : '') +
       (msg ? '<p class="tip" aria-live="polite"><b>' + msg + '</b></p>' : '') +
@@ -904,8 +1103,9 @@
       '<div class="testrow"><div class="fld"><label for="tw-' + id + '">' + wl + '</label><input id="tw-' + id + '" type="number" inputmode="decimal" step="any" min="0" value="' + prefill + '" placeholder="' + (isBw ? '0 for bodyweight' : 'Your guess') + '" data-k="tw:' + id + '"></div>' +
       '<div class="fld"><label for="tr-' + id + '">Reps completed</label><input id="tr-' + id + '" type="number" inputmode="numeric" step="1" min="0" max="30" placeholder="Reps" data-k="tr:' + id + '"></div></div>' +
       '<div class="acts"><button type="button" class="btn" data-act="trytest" data-id="' + id + '" data-k="try:' + id + '">Record this set</button></div>' +
-      '<div class="blk"><button type="button" class="link" data-act="manual" data-id="' + id + '" data-k="man:' + id + '" aria-expanded="' + manualOpen + '">' + (manualOpen ? 'Hide' : 'I already know my working weight') + '</button>' + manual + '</div>' +
-      swapBlockHTML(id) +
+      (e.retest ? '<p class="key">A retest can\'t be skipped. Record a set in the ' + RANGE + ' rep range to see your result.</p>' :
+        '<div class="blk"><button type="button" class="link" data-act="manual" data-id="' + id + '" data-k="man:' + id + '" aria-expanded="' + manualOpen + '">' + (manualOpen ? 'Hide' : 'I already know my working weight') + '</button>' + manual + '</div>') +
+      (headSwap ? '' : swapBlockHTML(id)) +
     '</div>';
   }
 
@@ -952,8 +1152,10 @@
       return '<li><span>' + fmtDate(h.d) + '</span><span>' + wStr(L.kind, h.w) + ' · ' + h.r.join(' · ') + '</span><span class="' + (h.ok ? 'ok' : 'no') + '">' + tag + '</span>' + notesLine(h.n, h.note) + '</li>';
     }).join('');
 
+    var isBar = PLATE_KINDS.indexOf(L.kind) >= 0;
     var adjust = adjustOpen ?
-      '<div class="form">' +
+      '<div class="form stack">' +
+        (isBar ? field(id, 'bar', 'Bar weight (' + u + '), all barbell lifts', barW(), '1') : '') +
         field(id, 'w', (L.kind === 'bw' ? 'Added weight' : 'Weight') + ' (' + u + ')', e.w, '0') +
         field(id, 'sets', 'Sets', e.sets, '1') +
         field(id, 'inc', 'Add when every set hits ' + REP_MAX + ' (' + u + ')', e.inc, '0.5') +
@@ -961,7 +1163,8 @@
 
     return '<div class="panel" id="pn-' + id + '">' +
       '<div class="big"><span class="bn">' + numeral(e, id) + '</span><span class="bu">' + unitTxt(e, id) + '</span><span class="bs">' + sub + '</span></div>' +
-      (PLATE_KINDS.indexOf(L.kind) >= 0 ? '<p class="plates">' + plateLine(e.w) + '</p>' : '') +
+      (isBar ? '<p class="plates">' + plateLine(e.w) + '</p>' : '') +
+      '<div class="blk"><button type="button" class="link" data-act="adjust" data-id="' + id + '" data-k="barlink:' + id + '" aria-expanded="' + adjustOpen + '">' + (adjustOpen ? 'Hide adjustments' : (isBar ? 'Change bar weight' : 'Adjust this lift')) + '</button>' + adjust + '</div>' +
       '<p class="key">' + baseLine(e, L) + '</p>' +
       plat +
       '<p class="tip">' + tip + '</p>' +
@@ -975,8 +1178,8 @@
         (histOpen ? '<h3 class="lbl">Working weight (' + u + ')</h3>' + chartHTML + '<h3 class="lbl">Recent sessions</h3>' +
           (sess ? '<ul class="sess">' + sess + '</ul>' : '<p class="empty">Nothing logged yet. Your first session sets the baseline.</p>') : '') +
       '</div>' +
-      swapBlockHTML(id) +
-      '<div class="blk"><button type="button" class="link" data-act="adjust" data-id="' + id + '" data-k="adj:' + id + '" aria-expanded="' + adjustOpen + '">' + (adjustOpen ? 'Hide adjustments' : 'Adjust this lift') + '</button>' + adjust + '</div>' +
+      (headSwap ? '' : swapBlockHTML(id)) +
+      (isBar && !adjustOpen ? '<div class="blk"><button type="button" class="link" data-act="adjust" data-id="' + id + '" data-k="adj:' + id + '" aria-expanded="false">Adjust this lift</button></div>' : '') +
     '</div>';
   }
   function field(id, f, label, val, min) {
@@ -1232,8 +1435,8 @@
     var plate = PLATE_KINDS.indexOf(L.kind) >= 0;
     var pts = plate ? [[0, 8], [0.5, 5], [0.7, 3], [0.85, 2]] : [[0.5, 6], [0.75, 3]];
     pts.forEach(function (p) {
-      var w = p[0] === 0 ? BAR[u] : rnd(e.w * p[0], st);
-      if (plate) w = Math.max(w, BAR[u]);
+      var w = p[0] === 0 ? barW() : rnd(e.w * p[0], st);
+      if (plate) w = Math.max(w, barW());
       if (w <= 0 || w >= e.w) return;
       if (out.length && out[out.length - 1].w >= w) return;
       out.push({ w: w, r: p[1] });
@@ -1296,17 +1499,18 @@
     var wuDone = w.started && w.step >= steps.length;
     var rs = rampSets(id);
     var rampN = rs.filter(function (s, i) { return ramp[i]; }).length;
-    var rampDone = !e.base || !rs.length || rampN === rs.length;
+    var locked = isLocked(id);
+    var rampDone = locked || !e.base || !rs.length || rampN === rs.length;
     var auto = {
       wu: !doneToday && !wuDone,
       ramp: !doneToday && wuDone && !rampDone,
-      work: doneToday || (wuDone && rampDone)
+      work: doneToday || (wuDone && rampDone) || locked
     };
     function isOpen(k) { return secOpen[k] !== undefined ? secOpen[k] : auto[k]; }
     var joints = WARMUPS[pid].joints.join(', ').toLowerCase();
     var wuSum = !w.started ? '~' + wuMinutes(pid) + ' min · ' + joints : (wuDone ? (w.skipped ? 'Skipped' : 'Done') : 'Step ' + (w.step + 1) + ' of ' + steps.length);
-    var rampSum = !e.base ? 'Light sets before the test' : (!rs.length ? 'Not needed' : (rampDone ? 'Done' : rampN + ' of ' + rs.length + ' sets'));
-    var workSum = !e.base ? 'Find your ' + RANGE + ' rep weight' : (doneToday ? 'Logged today' : wStr(L.kind, e.w) + ' · ' + e.sets + ' × ' + RANGE + (plateau(id) ? ' · Plateau' : ''));
+    var rampSum = locked ? 'Pick a variation first' : !e.base ? 'Light sets before the test' : (!rs.length ? 'Not needed' : (rampDone ? 'Done' : rampN + ' of ' + rs.length + ' sets'));
+    var workSum = locked ? 'Plateaued · pick a variation' : !e.base ? 'Find your ' + RANGE + ' rep weight' : (doneToday ? 'Logged today' : wStr(L.kind, e.w) + ' · ' + e.sets + ' × ' + RANGE + (plateau(id) ? ' · Plateau' : ''));
     return '<section class="today" style="--pc:var(' + P.color + ')">' +
         '<div class="thead">' + disc() + '<div><p class="eyebrow">Today</p><h2>' + P.name + '</h2><p>' + P.note + '</p></div></div>' +
         days + rot +
@@ -1314,10 +1518,25 @@
       '</section>' +
       '<div class="steps" style="--pc:var(' + P.color + ')">' +
         secHTML('wu', 1, 'Warm-up', wuSum, wuDone, isOpen('wu'), warmupHTML(pid)) +
-        secHTML('ramp', 2, 'Ramp-up sets', rampSum, e.base && rs.length && rampDone, isOpen('ramp'), rampHTML(id)) +
+        secHTML('ramp', 2, 'Ramp-up sets', rampSum, !locked && e.base && rs.length && rampDone, isOpen('ramp'), locked ? '<p class="empty">Choose an available variation under Work sets first.</p>' : rampHTML(id)) +
         secHTML('work', 3, e.base ? 'Work sets' : 'Baseline test', workSum, doneToday && !!e.base, isOpen('work'),
-          '<div class="workhead" data-k="row:' + id + '"><span class="n1">' + L.name + '</span><span class="n2">' + KINDS[L.kind] + '</span></div>' + noteBoxHTML(id) + panelHTML(id)) +
+          workBody(id)) +
       '</div>';
+  }
+  function workBody(id) {
+    var L = LIFTS[id];
+    if (isLocked(id)) {
+      var wo = waitingOn(id);
+      return '<div class="workhead" data-k="row:' + id + '"><span class="whn"><span class="n1">' + L.name + '</span><span class="n2">Locked</span></span></div>' +
+        '<div class="plat-note"><span><b>Plateau.</b> No new best in the last 4 sessions, so ' + L.name + ' is locked. Pick another variation below. It comes back once ' + namesList(wo) + (wo.length > 1 ? ' have each plateaued.' : ' has plateaued.') + '</span></div>' +
+        swapListHTML(id, true) +
+        (S.ex[id].history.length ? '<div class="acts"><button type="button" class="link" data-act="undo" data-id="' + id + '" data-k="undo:' + id + '">Undo last log</button></div>' : '');
+    }
+    headSwap = true;
+    var out = '<div class="workhead" data-k="row:' + id + '"><span class="whn"><span class="n1">' + L.name + '</span><span class="n2">' + KINDS[L.kind] + '</span></span>' + swapLinkHTML(id) + '</div>' +
+      swapListHTML(id) + musclesHTML(id) + panelHTML(id);
+    headSwap = false;
+    return out;
   }
   function secHTML(key, num, title, summary, done, open, body) {
     return '<section class="stepsec' + (open ? ' open' : '') + '"><h2 class="sh"><button type="button" class="shb" data-act="sec" data-v="' + key + '" data-k="sec:' + key + '" aria-expanded="' + open + '"' + (open ? ' aria-controls="sec-' + key + '"' : '') + '>' +
@@ -1380,7 +1599,7 @@
     }).join('');
     return '<div class="pgn"><span class="v">' + big + '</span><span class="u">' + unit + '</span><span class="delta">' + deltaTxt(hd) + '</span></div>' +
       '<p class="key">' + baseLine(e, L) + '</p>' +
-      (plateau(id) ? '<p class="key"><b>Plateau.</b> No new best in the last 4 sessions.</p>' : '') +
+      (isLocked(id) ? '<p class="key"><b>Locked.</b> Plateaued ' + fmtT(e.lock.t) + '. Back after ' + namesList(waitingOn(id)) + (waitingOn(id).length > 1 ? ' each plateau.' : ' plateaus.') + '</p>' : (plateau(id) ? '<p class="key"><b>Plateau.</b> No new best in the last 4 sessions.</p>' : '')) +
       chartHTML +
       '<div class="stats mini">' + st(s.length, 'Sessions') + st(inRange, 'In range') + st(tops, 'Top of range') + st(bq ? wStr(L.kind, bq.w) : '—', 'Best at ' + REP_MIN + '+') + '</div>' +
       '<div class="blk"><h3 class="lbl">Recent sessions</h3><ul class="sess">' + rows + '</ul></div>' + go;
@@ -1419,6 +1638,21 @@
     }
     return '<section class="pg" style="--pc:var(' + p.color + ')"><h3 class="pgh"><button type="button" class="pgbtn" id="pgb-' + p.id + '" data-act="pgtoggle" data-p="' + p.id + '" data-k="pg:' + p.id + '" aria-expanded="' + open + '"' + (open ? ' aria-controls="pg-' + p.id + '"' : '') + '>' +
       disc() + '<span class="pt"><b>' + p.name + '</b><span>' + p.note + '</span></span>' + sumHTML + '<svg class="chev" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></button></h3>' + body + '</section>';
+  }
+  var reorderOpen = false;
+  function ordinalTxt(i) { return 'position ' + (i + 1) + ' of ' + PATTERNS.length; }
+  function reorderHTML() {
+    var chev = function (up) { return '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="' + (up ? 'M5 12l5-5 5 5' : 'M5 8l5 5 5-5') + '"/></svg>'; };
+    var isDefault = PATTERNS.every(function (p, i) { return p.id === DEFAULT_ORDER[i]; });
+    return '<section class="reorder"><div class="rhead"><h3 class="lbl">Order of movement patterns</h3>' +
+      '<button type="button" class="link" data-act="orderreset" data-k="orderreset"' + (isDefault ? ' disabled' : '') + '>Reset to default</button></div>' +
+      '<p class="key">Use the arrows to set the order. The Train tab uses the same order for its day buttons and the daily rotation.</p>' +
+      '<ol class="rolist" aria-label="Movement pattern order">' + PATTERNS.map(function (p, i) {
+        return '<li>' + disc(p.color) + '<span class="rn" aria-hidden="true">' + (i + 1) + '</span><span class="rt"><b>' + p.name + '</b><span>' + p.note + '</span></span>' +
+          '<button type="button" class="mvb" data-act="mv" data-p="' + p.id + '" data-v="up" data-k="mv:' + p.id + ':up" aria-label="Move ' + p.name + ' up"' + (i === 0 ? ' disabled' : '') + '>' + chev(true) + '</button>' +
+          '<button type="button" class="mvb" data-act="mv" data-p="' + p.id + '" data-v="down" data-k="mv:' + p.id + ':down" aria-label="Move ' + p.name + ' down"' + (i === PATTERNS.length - 1 ? ' disabled' : '') + '>' + chev(false) + '</button></li>';
+      }).join('') + '</ol>' +
+      '<div class="acts"><button type="button" class="btn" data-act="reorderdone" data-k="reorderdone">Done</button></div></section>';
   }
   var progInit = false;
   function initProgOpen() {
@@ -1472,8 +1706,9 @@
       '<div class="seg" role="group" aria-label="Chart metric"><button type="button" data-act="metric" data-v="weight" data-k="m:weight" aria-pressed="' + (metric === 'weight') + '">Weight</button><button type="button" data-act="metric" data-v="reps" data-k="m:reps" aria-pressed="' + (metric === 'reps') + '">Reps</button></div></section>' +
       sample +
       '<p class="key">' + keyText(metric) + (metric === 'weight' ? ' A dashed line marks the weight from your baseline test.' : '') + '</p>' +
-      '<div class="pgctl"><button type="button" class="link" data-act="pgall" data-k="pgall">' + (PATTERNS.every(function (p) { return progOpen[p.id]; }) ? 'Collapse all' : 'Expand all') + '</button></div>' +
-      '<div class="pgrid">' + PATTERNS.map(pgHTML).join('') + '</div>' +
+      (reorderOpen ? reorderHTML() :
+        '<div class="pgctl"><button type="button" class="link" data-act="reorder" data-k="reorder">Reorder</button><button type="button" class="link" data-act="pgall" data-k="pgall">' + (PATTERNS.every(function (p) { return progOpen[p.id]; }) ? 'Collapse all' : 'Expand all') + '</button></div>' +
+        '<div class="pgrid">' + PATTERNS.map(pgHTML).join('') + '</div>') +
       '<section class="blk"><h3 class="lbl">Plateau watch</h3>' + watchHTML + '</section>' +
       '<section class="blk"><h3 class="lbl">Baseline tests</h3>' +
         (bases.length ? '<ul class="recs">' + bases.join('') + '</ul>' : '<p class="empty">Baseline tests you complete on the Train tab are listed here.</p>') + '</section>' +
@@ -1505,6 +1740,36 @@
   /* ---------- events ---------- */
 
   var tt;
+  function showGain(id, before, w, r) {
+    var L = LIFTS[id], g = document.getElementById('gain');
+    var a = e1rm(before.w, before.r), b2 = e1rm(w, r), pct = null, big, cls, sub;
+    if (a > 0) {
+      pct = Math.round((b2 - a) / a * 1000) / 10;
+      big = (pct > 0 ? '+' : (pct < 0 ? '−' : '')) + Math.abs(pct) + '%';
+      sub = pct > 0 ? 'stronger than your best before the lock' : (pct < 0 ? 'below your best before the lock. Normal after time away; it usually comes back within a few sessions.' : 'same as your best before the lock');
+    } else {
+      var dr = r - before.r;
+      pct = dr;
+      big = (dr > 0 ? '+' : (dr < 0 ? '−' : '')) + Math.abs(dr) + (Math.abs(dr) === 1 ? ' rep' : ' reps');
+      sub = dr > 0 ? 'more than your best before the lock' : (dr < 0 ? 'fewer than your best before the lock' : 'same as your best before the lock');
+    }
+    cls = pct > 0 ? '' : (pct < 0 ? ' neg' : ' flat');
+    g.innerHTML = '<div class="gcard"><p class="gk">Retest result</p><h2 class="gl" id="gain-title">' + esc(L.name) + '</h2>' +
+      '<p class="gp' + cls + '">' + big + '</p><p class="gs">' + sub + '</p>' +
+      '<p class="gc">Now ' + wStr(L.kind, w) + ' × ' + r + '<br>Before ' + wStr(L.kind, before.w) + ' × ' + before.r + (before.d ? ' · ' + fmtDate(before.d) : '') + '</p>' +
+      (a > 0 ? '<p class="key">Compared by estimated one-rep max, so different weights and reps line up. Training starts at ' + wStr(L.kind, S.ex[id].w) + '.</p>' : '<p class="key">Training starts at ' + wStr(L.kind, S.ex[id].w) + '.</p>') +
+      '<button type="button" class="btn" id="gain-ok">Back to training</button></div>';
+    var tt0 = document.getElementById('toast'); if (tt0) tt0.hidden = true;
+    g.hidden = false;
+    var ok = document.getElementById('gain-ok');
+    if (ok) ok.focus();
+  }
+  (function () {
+    var g = document.getElementById('gain');
+    function close() { g.hidden = true; g.innerHTML = ''; }
+    g.addEventListener('click', function (ev) { if (ev.target === g || ev.target.id === 'gain-ok') close(); });
+    document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && !g.hidden) close(); });
+  })();
   function toast(m) {
     var t = document.getElementById('toast');
     t.textContent = m;
@@ -1518,7 +1783,45 @@
     if (!b) return;
     var act = b.dataset.act, id = b.dataset.id;
     if (act === 'unit') { convertUnit(b.dataset.v); render(); return; }
-    if (act === 'tab') { tab = b.dataset.v; window.scrollTo(0, 0); render(); return; }
+    if (act === 'tab') { tab = b.dataset.v; reorderOpen = false; window.scrollTo(0, 0); render(); return; }
+    if (act === 'reorder') {
+      reorderOpen = true;
+      render();
+      var fb = app.querySelector('[data-k="mv:' + PATTERNS[0].id + ':down"]');
+      if (fb) { try { fb.focus({ preventScroll: true }); } catch (err) { fb.focus(); } }
+      return;
+    }
+    if (act === 'reorderdone') {
+      reorderOpen = false;
+      render();
+      var rb = app.querySelector('[data-k="reorder"]');
+      if (rb) { try { rb.focus({ preventScroll: true }); } catch (err) { rb.focus(); } }
+      return;
+    }
+    if (act === 'orderreset') {
+      S.order = DEFAULT_ORDER.slice();
+      applyOrder();
+      save('settings');
+      render();
+      toast('Pattern order reset to the default.');
+      return;
+    }
+    if (act === 'mv') {
+      var mp = b.dataset.p, md = b.dataset.v === 'up' ? -1 : 1;
+      var mi = patIndex(mp), mj = mi + md;
+      if (mj < 0 || mj >= PATTERNS.length) return;
+      var ord = PATTERNS.map(function (p) { return p.id; });
+      ord[mi] = ord[mj]; ord[mj] = mp;
+      S.order = ord;
+      applyOrder();
+      save('settings');
+      render();
+      var nb = app.querySelector('[data-k="mv:' + mp + ':' + b.dataset.v + '"]');
+      if (nb && nb.disabled) nb = app.querySelector('[data-k="mv:' + mp + ':' + (b.dataset.v === 'up' ? 'down' : 'up') + '"]');
+      if (nb) { try { nb.focus({ preventScroll: true }); } catch (err) { nb.focus(); } }
+      toast(patById(mp).name + ' moved to ' + ordinalTxt(mj) + '.');
+      return;
+    }
     if (act === 'metric') { metric = b.dataset.v; render(); return; }
     if (act === 'pgtoggle') { progOpen[b.dataset.p] = !progOpen[b.dataset.p]; render(); return; }
     if (act === 'pgall') {
@@ -1567,6 +1870,7 @@
     }
     if (act === 'pgfocus') {
       if (!S.ex[id]) return;
+      if (isLocked(id)) { toast(LIFTS[id].name + ' is locked until the other variations plateau.'); return; }
       if (S.focus[PAT_OF[id]] !== id) { S.focus[PAT_OF[id]] = id; save('settings'); }
       pickDay(PAT_OF[id]);
       tab = 'train';
@@ -1606,8 +1910,10 @@
       drafts[id] = null;
       secOpen = {};
       restReset();
+      var lk = maybeLock(id);
       save(id);
       render();
+      if (lk) { toast(LIFTS[id].name + ' plateaued and is locked. Pick another ' + patById(PAT_OF[id]).name + ' variation.'); return; }
       toast(LIFTS[id].name + ' logged. Next target ' + wStr(LIFTS[id].kind, e.w) + '. ' + PATTERNS[(patIndex(PAT_OF[id]) + 1) % PATTERNS.length].name + ' is up next.');
     } else if (act === 'undo') {
       undoLast(id);
@@ -1623,19 +1929,25 @@
       var rv = parseInt((document.getElementById('tr-' + id) || {}).value, 10);
       var okw = isFinite(wv) && wv >= 0 && wv <= 2000 && (LIFTS[id].kind === 'bw' || wv > 0);
       if (!okw || !isFinite(rv) || rv < 0 || rv > 30) { toast('Enter the weight you used and the reps you completed.'); return; }
+      var rt = e.retest;
       var res = recordTry(id, wv, rv);
+      if (res === 'ok' && rt) e.retest = null;
       if (res !== 'ok') { primeAudio(); restRestart(); } else restReset();
       save(id);
       render();
-      if (res === 'ok') toast('Baseline set at ' + wStr(LIFTS[id].kind, wv) + ' for ' + rv + ' reps. Training starts at ' + wStr(LIFTS[id].kind, e.w) + '.');
+      if (res === 'ok' && rt) showGain(id, rt, wv, rv);
+      else if (res === 'ok') toast('Baseline set at ' + wStr(LIFTS[id].kind, wv) + ' for ' + rv + ' reps. Training starts at ' + wStr(LIFTS[id].kind, e.w) + '.');
       else toast(rv + (res === 'light' ? ' reps is too light. Rest, then try heavier.' : ' reps is too heavy. Rest, then try lighter.'));
     } else if (act === 'manual') {
+      if (e.retest) return;
       manualOpen = !manualOpen;
       render();
     } else if (act === 'usemanual') {
+      if (e.retest) return;
       var mv = parseFloat((document.getElementById('mw-' + id) || {}).value);
       if (!isFinite(mv) || mv < 0 || mv > 2000 || (LIFTS[id].kind !== 'bw' && mv <= 0)) { toast('Enter the weight you want to train with.'); return; }
       useManual(id, mv);
+      e.retest = null;
       manualOpen = false;
       save(id);
       render();
@@ -1652,6 +1964,7 @@
       swapOpen = !swapOpen;
       render();
     } else if (act === 'focus') {
+      if (isLocked(id)) { toast(LIFTS[id].name + ' is locked until the other variations plateau.'); return; }
       S.focus[PAT_OF[id]] = id;
       openId = id;
       swapOpen = false;
@@ -1671,15 +1984,6 @@
     }
   });
 
-  app.addEventListener('input', function (ev) {
-    var t = ev.target;
-    if (!t.dataset || t.dataset.note === undefined || !S.ex[t.dataset.id]) return;
-    var nid = t.dataset.id;
-    S.ex[nid].note = t.value.slice(0, NOTE_MAX);
-    persistLocal();
-    clearTimeout(noteTimers[nid]);
-    noteTimers[nid] = setTimeout(function () { save(nid); }, 800);
-  });
   app.addEventListener('keydown', function (ev) {
     var t = ev.target;
     if (!t.dataset || t.dataset.act !== 'tab') return;
@@ -1695,12 +1999,19 @@
     if (!t.dataset || !t.dataset.field) return;
     var id = t.dataset.id, f = t.dataset.field, e = S.ex[id];
     if (!e) return;
-    var lim = { w: [0, 2000], sets: [1, 10], inc: [0.5, 100] }[f];
+    var lim = { w: [0, 2000], sets: [1, 10], inc: [0.5, 100], bar: [1, 200] }[f];
     if (!lim) return;
     var v = parseFloat(t.value);
     if (!isFinite(v) || v < lim[0] || v > lim[1]) {
       toast('Enter a value from ' + lim[0] + ' to ' + lim[1] + '.');
       render();
+      return;
+    }
+    if (f === 'bar') {
+      setBar(v);
+      save('settings');
+      render();
+      toast('Bar set to ' + fmt(v) + ' ' + S.unit + '. Plate math uses it for every barbell lift.');
       return;
     }
     if (f === 'sets') { v = Math.round(v); drafts[id] = null; }
@@ -1725,7 +2036,7 @@
       '<p class="foot">Saved on this phone only' + (swReady ? ' and ready to use offline' : '') + '. Export a backup now and then so a lost or reset phone keeps your history. Last backup: ' + (lb ? fmtDate(lb) : 'never') + '.</p>' +
       '<div class="linkrow"><button type="button" class="link" data-act="export" data-k="export">Export backup</button><button type="button" class="link" data-act="importpick" data-k="importpick">Import backup</button>' +
       '<input type="file" id="import-file" accept="application/json,.json" hidden></div>' + confirmBar +
-      '<p class="foot">Plate math assumes a ' + BAR.lb + ' lb or ' + BAR.kg + ' kg bar.</p></div>';
+      '<p class="foot">Plate math uses a ' + fmt(barW()) + ' ' + S.unit + ' bar. Change it under Adjust on any barbell lift.</p></div>';
   }
   function exportData() {
     var name = 'overload-log-backup-' + today() + '.json';
@@ -1762,7 +2073,7 @@
         var st = o && o.state ? o.state : o;
         if (!st || typeof st !== 'object' || !st.ex || typeof st.ex !== 'object') throw new Error('shape');
         var n = 0;
-        Object.keys(LIFTS).forEach(function (id) { var x = st.ex[id]; if (x && Array.isArray(x.history)) n += x.history.length; });
+        Object.keys(st.ex).forEach(function (id) { var x = st.ex[id]; if (x && Array.isArray(x.history)) n += x.history.length; });
         pendingImport = { state: st, when: o.exported || '', sessions: n };
         render();
       } catch (err) {
@@ -1777,7 +2088,15 @@
     S.unit = st.unit === 'kg' ? 'kg' : 'lb';
     S.focus = cleanFocus(st.focus);
     S.rest = cleanRest(st.rest);
+    S.bar = cleanBar(st.bar);
+    S.order = cleanOrder(st.order);
+    applyOrder();
     Object.keys(LIFTS).forEach(function (id) { S.ex[id] = clean(id, st.ex[id]); });
+    // Lifts that are no longer in the list keep their saved data, untouched, so nothing logged is lost.
+    S.retired = {};
+    if (st.retired && typeof st.retired === 'object') Object.keys(st.retired).forEach(function (id) { if (!LIFTS[id] && st.retired[id]) S.retired[id] = st.retired[id]; });
+    Object.keys(st.ex).forEach(function (id) { if (!LIFTS[id] && st.ex[id]) S.retired[id] = st.ex[id]; });
+    enforceLocks();
     pendingImport = null;
     drafts = {};
     secOpen = {};
@@ -1806,6 +2125,7 @@
     navigator.serviceWorker.ready.then(function () { swReady = true; render(); });
   }
 
+  if (enforceLocks()) persistLocal();
   render();
 })();
 </script>
