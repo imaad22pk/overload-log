@@ -417,7 +417,8 @@
   var KINDS = { bb: 'Barbell', tb: 'Trap bar', db: 'Dumbbells, per hand', mc: 'Machine or cable', bw: 'Bodyweight plus load', lm: 'Landmine', kb: 'One dumbbell or kettlebell' };
   var PLATE_KINDS = ['bb', 'tb'];
   var PLATES = { lb: [45, 35, 25, 10, 5, 2.5], kg: [25, 20, 15, 10, 5, 2.5, 1.25] };
-  var BAR = { lb: 45, kg: 20 };
+  var BAR = { lb: 15, kg: 7 };
+  var BAR_V = 2; // bump to reset every saved bar weight to BAR once
   var LB = 0.45359237;
   var LS = 'overload-log-v2';
   var PAT_OF = {};
@@ -426,7 +427,7 @@
   var DEFAULT_ORDER = PATTERNS.map(function (p) { return p.id; });
 
   var app = document.getElementById('app');
-  var S = { unit: 'lb', focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)), rest: 180, bar: { lb: BAR.lb, kg: BAR.kg }, order: DEFAULT_ORDER.slice(), ex: {}, retired: {} };
+  var S = { unit: 'lb', focus: JSON.parse(JSON.stringify(DEFAULT_FOCUS)), rest: 180, bar: { lb: BAR.lb, kg: BAR.kg }, barV: BAR_V, order: DEFAULT_ORDER.slice(), ex: {}, retired: {} };
   // Bar weight is set once by the user and remembered (per unit) for every barbell lift.
   function cleanBar(b) {
     var out = { lb: BAR.lb, kg: BAR.kg };
@@ -632,6 +633,12 @@
       if (o && o.ex) Object.keys(o.ex).forEach(function (id) { if (!LIFTS[id] && o.ex[id]) S.retired[id] = o.ex[id]; });
     }
   } catch (err) { /* storage unavailable */ }
+  // One-time switch to the new default bar weight (15 lb / 7 kg) for logs saved before it.
+  (function () {
+    var o2 = null;
+    try { o2 = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (err) { /* ignore */ }
+    if (o2 && o2.barV !== BAR_V) { S.bar = { lb: BAR.lb, kg: BAR.kg }; S.barV = BAR_V; persistLocal(); }
+  })();
   migrateNoteDrafts();
   applyOrder();
 
